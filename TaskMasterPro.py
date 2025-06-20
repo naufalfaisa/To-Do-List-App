@@ -59,7 +59,7 @@ def tambah_tugas(todolist):
         print("\nNama tugas tidak boleh kosong!")
         input("\nENTER untuk kembali")
         return
-    
+
     try:
         prioritas = int(input("Prioritas (1:Low, 2:Medium, 3:High, 4:Urgent): "))
         if prioritas not in [1, 2, 3, 4]:
@@ -79,9 +79,9 @@ def tambah_tugas(todolist):
         return
 
     if nama_tugas and deadline:
-        id_tugas = generate_id(todolist)
+        tugas_id = generate_id(todolist)
         tugas_baru = {
-            'id': id_tugas,
+            'id': tugas_id,
             'tugas': nama_tugas,
             'prioritas': prioritas,
             'deadline': deadline,
@@ -91,7 +91,7 @@ def tambah_tugas(todolist):
         undo_stack.append(("hapus", tugas_baru))
         redo_stack.clear()
         save_todo(todolist)
-        print(f"\nTugas berhasil ditambahkan dengan ID: {id_tugas}")
+        print(f"\nTugas berhasil ditambahkan dengan ID: {tugas_id}")
     else:
         print("\nInput tidak lengkap")
     input("\nENTER untuk kembali")
@@ -108,9 +108,9 @@ def lihat_tugas(todolist):
             print(f"-[{label}] {tugas['id']} | {tugas['tugas']} | Deadline: {tugas['deadline']} | [{tugas['status']}]")
     input("\nENTER untuk kembali")
 
-def cari_tugas_by_id(todolist, id_tugas):
+def cari_tugas_by_id(todolist, tugas_id):
     for tugas in todolist:
-        if tugas['id'] == id_tugas:
+        if tugas['id'] == tugas_id:
             return tugas
     return None
 
@@ -127,8 +127,8 @@ def tandai_selesai(todolist):
         label = label_prioritas(tugas['prioritas'])
         print(f"[{label}] {tugas['id']}: {tugas['tugas']} [{tugas['status']}]")
 
-    id_tugas = input("\nMasukkan ID tugas yang ingin ditandai selesai: ").strip().upper()
-    tugas = cari_tugas_by_id(todolist, id_tugas)
+    tugas_id = input("\nMasukkan ID tugas yang ingin ditandai selesai: ").strip().upper()
+    tugas = cari_tugas_by_id(todolist, tugas_id)
     if tugas:
         status_lama = tugas['status']
         tugas['status'] = "Selesai"
@@ -153,8 +153,8 @@ def hapus_tugas(todolist):
         label = label_prioritas(tugas['prioritas'])
         print(f"[{label}] {tugas['id']}: {tugas['tugas']} [{tugas['status']}]")
 
-    id_tugas = input("\nMasukkan ID tugas yang ingin dihapus: ").strip().upper()
-    tugas = cari_tugas_by_id(todolist, id_tugas)
+    tugas_id = input("\nMasukkan ID tugas yang ingin dihapus: ").strip().upper()
+    tugas = cari_tugas_by_id(todolist, tugas_id)
     if tugas:
         todolist.remove(tugas)
         undo_stack.append(("tambah", tugas))
@@ -230,13 +230,12 @@ def lihat_reminder(todolist):
 
     today = datetime.date.today()
     pq = PriorityQueue()
-    
+
     for tugas in todolist:
         try:
             deadline = datetime.datetime.strptime(tugas['deadline'], "%d-%m-%Y").date()
             days_left = (deadline - today).days
             if tugas['status'].lower() != "selesai" and 0 <= days_left <= 3:
-                # Tambahkan ke antrian prioritas: (hari tersisa, tugas)
                 pq.put((days_left, tugas))
         except ValueError:
             continue
@@ -265,8 +264,8 @@ def set_deadline(todolist):
         label = label_prioritas(tugas['prioritas'])
         print(f"[{label}] {tugas['id']}: {tugas['tugas']} [{tugas['status']}]")
 
-    id_tugas = input("\nMasukkan ID tugas yang ingin diubah deadlinenya: ").strip().upper()
-    tugas = cari_tugas_by_id(todolist, id_tugas)
+    tugas_id = input("\nMasukkan ID tugas yang ingin diubah deadlinenya: ").strip().upper()
+    tugas = cari_tugas_by_id(todolist, tugas_id)
     if not tugas:
         print("\nID tidak ditemukan")
         input("\nENTER untuk kembali")
