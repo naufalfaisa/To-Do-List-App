@@ -6,6 +6,7 @@ from queue import PriorityQueue
 # File database
 FILE_NAME = "database_todolist.txt"
 
+# Undo/redo stack
 undo_stack = deque()
 redo_stack = deque()
 
