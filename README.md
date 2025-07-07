@@ -22,6 +22,7 @@ python TaskMasterPro.py
 
 Setelah dijalankan kamu bisa memilih menu berikut:
 
+```bash
 [1] Tambah Tugas Baru
 [2] Lihat Semua Tugas
 [3] Tandai Selesai
@@ -31,6 +32,7 @@ Setelah dijalankan kamu bisa memilih menu berikut:
 [7] Lihat Reminder
 [8] Set Deadline
 [9] Keluar
+```
 
 ## Information
 
